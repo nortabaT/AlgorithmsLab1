@@ -25,15 +25,14 @@ public class Main {
 		
 		input.nextLine();
 		
+		// init lists
 		ArrayList<TicNode> ticList = initTic(input, numTics);
 		ArrayList<TacNode> tacList = initTac(input, numTacs);
-		setUpTicMatches(ticList, tacList);
-		ArrayList<TicTac> mcmSolution = setUpMatching(ticList, tacList);
+		BipartiteGraph g = new BipartiteGraph(ticList, tacList);
 		
-		System.out.println(mcmSolution);
 	}
-
-	public static ArrayList<TicTac> setUpMatching(ArrayList<TicNode> tics, ArrayList<TacNode> tacs){
+	
+/*	public static ArrayList<TicTac> setUpMatching(ArrayList<TicNode> tics, ArrayList<TacNode> tacs){
 		HashMap<TacNode, TicTac> tacMap = new HashMap<TacNode, TicTac>(); // kev, val -> tac, matching (for fast lookup)
 		
 		// nested for loop of setting up first grouping of tic tac matchings
@@ -65,9 +64,9 @@ public class Main {
 		}
 		
 		return solution;
-	}
+	}*/
 	
-	private static HashMap<TacNode, TicTac> findReplacement(TicNode currentTic, HashMap<TacNode, TicTac> tacMap){
+/*	private static HashMap<TacNode, TicTac> findReplacement(TicNode currentTic, HashMap<TacNode, TicTac> tacMap){
 		for(TicTac match : currentTic.suitableMatches){
 			if(!tacMap.containsKey(match.tac)){							// base case, if there is no match for this current tac, match and move on
 				tacMap.put(match.tac, match);
@@ -84,7 +83,7 @@ public class Main {
 		}
 		
 		return tacMap;
-	}
+	}*/
 
 	public static ArrayList<TicNode> initTic(Scanner t, int tics){
 		ArrayList<TicNode> ticList = new ArrayList<TicNode>();
@@ -108,21 +107,6 @@ public class Main {
 		}
 		return tacList;
 	}
-	
-	private static void setUpTicMatches(ArrayList<TicNode> ticList, ArrayList<TacNode> tacList){
-		ArrayList<TicTac> possibleMatches;
-		
-		for(int i = 0; i < ticList.size(); i++){
-			possibleMatches = new ArrayList<TicTac>();
-			for(TacNode tac : tacList){
-				if(tac.val >= ticList.get(i).low && tac.val <= ticList.get(i).high){
-					possibleMatches.add(new TicTac(ticList.get(i), tac));
-				}
-			}
-			
-			Collections.sort(possibleMatches);
-			ticList.get(i).setMatchList(possibleMatches);
-		}
-	}
+
 	
 }
