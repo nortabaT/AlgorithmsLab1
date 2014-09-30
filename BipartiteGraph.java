@@ -2,17 +2,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.HashSet;
 
 public class BipartiteGraph {
 	
-	public ArrayList<TicNode> tics;
-	public ArrayList<TacNode> tacs;
+	private ArrayList<TicNode> tics;
+	private ArrayList<TacNode> tacs;
 	
 	private Map<Integer, TicNode> ticMap = new HashMap<Integer, TicNode>();
 	private Map<Integer, TacNode> tacMap = new HashMap<Integer, TacNode>();
 	
-	public ArrayList<ArrayList<Edge>> edges;
-	public ArrayList<ArrayList<Edge>> solutions;
+	private ArrayList<ArrayList<Edge>> edges;
+	private ArrayList<ArrayList<Edge>> solutions;
+	public HashSet<HashSet<Edge>> setSolutions;
+	
 	public BipartiteGraph(ArrayList<TicNode> ticList, ArrayList<TacNode> tacList){
 		tics = ticList;
 		tacs = tacList;
@@ -21,11 +24,36 @@ public class BipartiteGraph {
 		
 		for(TicNode t : tics) ticMap.put(t.val, t);		// fill maps
 		for(TacNode t : tacs) tacMap.put(t.val, t);
+		
+
+	}
+	
+	public void solve(){
 		setUpEdges();
-		solutions = reduce();
+		reduce();
 		reduceToMCM();
 		reduceToMaxWeight();
 		System.out.println("Hi");
+		dumpToSet();
+		printSolution();
+	}
+	
+	public void printSolution(){
+		for(HashSet<Edge> edges : setSolutions){
+			for(Edge e : edges){
+				System.out.print(e+" ");
+			}
+			System.out.println();
+		}
+	}
+	
+	private void dumpToSet(){
+		setSolutions = new HashSet<HashSet<Edge>>();
+		
+		for(ArrayList<Edge> sol : solutions){
+			HashSet<Edge> setSol = new HashSet<Edge>(sol);
+			setSolutions.add(setSol);
+		}
 	}
 	
 	private void setUpEdges(){
@@ -68,7 +96,7 @@ public class BipartiteGraph {
 		}
 	}
 	
-	private ArrayList<ArrayList<Edge>> reduce(){
+	private void reduce(){
 		ArrayList<Integer> usedTacs;
 		ArrayList<Edge>	replacement;
 		ArrayList<ArrayList<Edge>> reducedSolutions = new ArrayList<ArrayList<Edge>>();
@@ -85,7 +113,7 @@ public class BipartiteGraph {
 			}
 			reducedSolutions.add(replacement);
 		}
-		return reducedSolutions;
+		solutions = reducedSolutions;
 	}
 	
 	private void reduceToMCM(){
@@ -123,7 +151,7 @@ public class BipartiteGraph {
 		Iterator<Integer> weightItr = weights.iterator();
 		
 		while(itr.hasNext()){
-			ArrayList<Edge> curSol = itr.next();
+			itr.next();
 			int curWeight = weightItr.next();
 			
 			if(curWeight != maxWeight){

@@ -10,18 +10,16 @@ public class Edge implements Comparable<Edge>{
 	}
 	
 	public String toString(){
-		return tic + " : " + tac;
+		return "["+tic + " : " + tac+"]";
 	}
 
 	@Override
-	public int compareTo(Edge o){
-		if(this.weight > o.weight){
-			return -1;
+	public int compareTo(Edge arg0) {
+		// TODO Auto-generated method stub
+		if(this.hashCode() == arg0.hashCode()){
+			return 0;
 		}
-		else if(this.weight < o.weight){
-			return 1;
-		}
-		
-		return 0;
+		return -1;
 	}
+
 }

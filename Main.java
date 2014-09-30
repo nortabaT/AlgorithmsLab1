@@ -26,7 +26,7 @@ public class Main {
 		ArrayList<TicNode> ticList = initTic(input, numTics);
 		ArrayList<TacNode> tacList = initTac(input, numTacs);
 		BipartiteGraph g = new BipartiteGraph(ticList, tacList);
-		
+		g.solve();
 	}
 
 	public static ArrayList<TicNode> initTic(Scanner t, int tics){
