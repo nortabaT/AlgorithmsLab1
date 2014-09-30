@@ -1,15 +1,23 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BipartiteGraph {
 	
 	public ArrayList<TicNode> tics;
 	public ArrayList<TacNode> tacs;
 	
+	private Map<Integer, TicNode> ticMap = new HashMap<Integer, TicNode>();
+	private Map<Integer, TacNode> tacMap = new HashMap<Integer, TacNode>();
+	
 	public ArrayList<ArrayList<Edge>> edges;
 	public BipartiteGraph(ArrayList<TicNode> ticList, ArrayList<TacNode> tacList){
 		tics = ticList;
 		tacs = tacList;
 		edges = new ArrayList<ArrayList<Edge>>();
+		
+		for(TicNode t : tics) ticMap.put(t.val, t);		// fill maps
+		for(TacNode t : tacs) tacMap.put(t.val, t);
 		setUpEdges();
 	}
 	
