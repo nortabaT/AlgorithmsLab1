@@ -14,18 +14,18 @@ public class BipartiteGraph {
 	
 	private ArrayList<ArrayList<Edge>> edges;
 	private ArrayList<ArrayList<Edge>> solutions;
+	
 	public HashSet<HashSet<Edge>> setSolutions;
+	public String solutionString;
 	
 	public BipartiteGraph(ArrayList<TicNode> ticList, ArrayList<TacNode> tacList){
 		tics = ticList;
 		tacs = tacList;
 		edges = new ArrayList<ArrayList<Edge>>();
 		solutions = new ArrayList<ArrayList<Edge>>();
-		
+		solutionString = "";
 		for(TicNode t : tics) ticMap.put(t.val, t);		// fill maps
 		for(TacNode t : tacs) tacMap.put(t.val, t);
-		
-
 	}
 	
 	public void solve(){
@@ -33,18 +33,27 @@ public class BipartiteGraph {
 		reduce();
 		reduceToMCM();
 		reduceToMaxWeight();
-		System.out.println("Hi");
 		dumpToSet();
-		printSolution();
+		setSolutionString();
+		System.out.println(solutionString);
 	}
 	
-	public void printSolution(){
+	public String getSolutionString(){
+		return solutionString;
+	}
+	
+	private void setSolutionString(){
+		String display = "";
+		display += setSolutions.size() + "\n";
+		
 		for(HashSet<Edge> edges : setSolutions){
 			for(Edge e : edges){
-				System.out.print(e+" ");
+				display += e + " ";
 			}
-			System.out.println();
+			display += "\n";
 		}
+		
+		solutionString = display;
 	}
 	
 	private void dumpToSet(){
@@ -143,7 +152,6 @@ public class BipartiteGraph {
 			weights.add(curWeight);		// saving this solutions weight for comparison later
 			maxWeight = (curWeight > maxWeight) ? curWeight : maxWeight;
 		}
-		System.out.print(maxWeight);
 		
 		Iterator<ArrayList<Edge>> itr = solutions.iterator();
 		Iterator<Integer> weightItr = weights.iterator();
