@@ -21,6 +21,7 @@ public class BipartiteGraph {
 		for(TicNode t : tics) ticMap.put(t.val, t);		// fill maps
 		for(TacNode t : tacs) tacMap.put(t.val, t);
 		setUpEdges();
+		solutions = reduce();
 	}
 	
 	private void setUpEdges(){
@@ -50,10 +51,10 @@ public class BipartiteGraph {
 			sol = new ArrayList<Edge>();
 			for(int i = 0; i < count; i++){
 				sol.add(current.get(i));
-				System.out.print(current.get(i) + ", ");
+			//	System.out.print(current.get(i) + ", ");
 			}
 			solutions.add(sol);
-			System.out.println();
+			//System.out.println();
 		}
 		else{
 			for(int i = 0; i < input.get(n).size(); i++){
@@ -61,6 +62,26 @@ public class BipartiteGraph {
 				combine(input, current, (n+1)%(edges.size()), count+1);
 			}
 		}
+	}
+	
+	private ArrayList<ArrayList<Edge>> reduce(){
+		ArrayList<Integer> usedTacs;
+		ArrayList<Edge>	replacement;
+		ArrayList<ArrayList<Edge>> reducedSolutions = new ArrayList<ArrayList<Edge>>();
+		
+		for(ArrayList<Edge> sol : solutions){
+			usedTacs = new ArrayList<Integer>();
+			replacement = new ArrayList<Edge>();
+			
+			for(int i = 0; i < sol.size(); i++){
+				if(!usedTacs.contains(sol.get(i).tac)){
+					replacement.add(sol.get(i));
+					usedTacs.add(sol.get(i).tac);
+				}
+			}
+			reducedSolutions.add(replacement);
+		}
+		return reducedSolutions;
 	}
 	
 }
