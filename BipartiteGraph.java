@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class BipartiteGraph {
@@ -22,6 +23,7 @@ public class BipartiteGraph {
 		for(TacNode t : tacs) tacMap.put(t.val, t);
 		setUpEdges();
 		solutions = reduce();
+		reduceToMCM();
 	}
 	
 	private void setUpEdges(){
@@ -82,6 +84,22 @@ public class BipartiteGraph {
 			reducedSolutions.add(replacement);
 		}
 		return reducedSolutions;
+	}
+	
+	private void reduceToMCM(){
+		int maxLen = -1;
+		for(ArrayList<Edge> sol : solutions){
+			maxLen = (sol.size() > maxLen) ? sol.size() : maxLen;
+		}
+		
+		Iterator<ArrayList<Edge>> itr = solutions.iterator();
+		while(itr.hasNext()){
+			ArrayList<Edge> curSol = itr.next();
+			
+			if(curSol.size() != maxLen){
+				itr.remove();
+			}
+		}
 	}
 	
 }
