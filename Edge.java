@@ -1,15 +1,11 @@
-public class TicTac implements Comparable<TicTac>{
+public class Edge implements Comparable<Edge>{
 	public TicNode tic;
 	public TacNode tac;
-	public int debugTic;
-	public int debugTac;
 	public int edge;
 	
-	public TicTac(TicNode tic, TacNode tac){
+	public Edge(TicNode tic, TacNode tac){
 		this.tic = tic;
 		this.tac = tac;
-		debugTic = tic.val;
-		debugTac = tac.val;
 		edge = tic.weight + tac.weight;
 	}
 	
@@ -18,7 +14,7 @@ public class TicTac implements Comparable<TicTac>{
 	}
 
 	@Override
-	public int compareTo(TicTac o){
+	public int compareTo(Edge o){
 		if(this.edge > o.edge){
 			return -1;
 		}
