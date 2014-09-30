@@ -83,10 +83,8 @@ public class BipartiteGraph {
 			sol = new ArrayList<Edge>();
 			for(int i = 0; i < count; i++){
 				sol.add(current.get(i));
-			//	System.out.print(current.get(i) + ", ");
 			}
 			solutions.add(sol);
-			//System.out.println();
 		}
 		else{
 			for(int i = 0; i < input.get(n).size(); i++){
