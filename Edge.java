@@ -1,12 +1,12 @@
 public class Edge implements Comparable<Edge>{
-	public TicNode tic;
-	public TacNode tac;
+	public int tic;
+	public int tac;
 	public int edge;
 	
-	public Edge(TicNode tic, TacNode tac){
+	public Edge(int tic, int tac, int weight1, int weight2){
 		this.tic = tic;
 		this.tac = tac;
-		edge = tic.weight + tac.weight;
+		edge = weight1 + weight2;
 	}
 	
 	public String toString(){
