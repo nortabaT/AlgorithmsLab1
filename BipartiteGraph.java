@@ -1,60 +1,163 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-
+import java.util.Iterator;
+import java.util.Map;
+import java.util.HashSet;
 
 public class BipartiteGraph {
 	
-	public ArrayList<TicNode> tics;
-	public ArrayList<TacNode> tacs;
-	public ArrayList<HashMap<TacNode, TicTac>> edgeCombinations;
+	private ArrayList<TicNode> tics;
+	private ArrayList<TacNode> tacs;
+	
+	private Map<Integer, TicNode> ticMap = new HashMap<Integer, TicNode>();
+	private Map<Integer, TacNode> tacMap = new HashMap<Integer, TacNode>();
+	
+	private ArrayList<ArrayList<Edge>> edges;
+	private ArrayList<ArrayList<Edge>> solutions;
+	public HashSet<HashSet<Edge>> setSolutions;
 	
 	public BipartiteGraph(ArrayList<TicNode> ticList, ArrayList<TacNode> tacList){
 		tics = ticList;
 		tacs = tacList;
-		edgeCombinations = new ArrayList<HashMap<TacNode, TicTac>>();
+		edges = new ArrayList<ArrayList<Edge>>();
+		solutions = new ArrayList<ArrayList<Edge>>();
 		
-		setUpMatches();
-		setUpMaps();
-	}
+		for(TicNode t : tics) ticMap.put(t.val, t);		// fill maps
+		for(TacNode t : tacs) tacMap.put(t.val, t);
+		
 
-	private void setUpMaps(){
-		for(int i = 0; i < tics.size(); i++){						// for every tic in this graph
-			TicNode curTic = tics.get(i);
-			for(int j = 0; j < curTic.suitableMatches.size(); j++){	// for every possible match this tic has, create a edgeMap starting with this edge
-				TicTac curEdge = curTic.suitableMatches.get(j);
-				fillEdges(i, curEdge);
+	}
+	
+	public void solve(){
+		setUpEdges();
+		reduce();
+		reduceToMCM();
+		reduceToMaxWeight();
+		System.out.println("Hi");
+		dumpToSet();
+		printSolution();
+	}
+	
+	public void printSolution(){
+		for(HashSet<Edge> edges : setSolutions){
+			for(Edge e : edges){
+				System.out.print(e+" ");
 			}
+			System.out.println();
 		}
 	}
 	
-	private ArrayList<HashMap<TacNode, TicTac>> fillEdges(int ticsIndex, TicTac curEdge){
-		ArrayList<HashMap<TacNode, TicTac>> edgeMaps = new ArrayList<HashMap<TacNode, TicTac>>();
+	private void dumpToSet(){
+		setSolutions = new HashSet<HashSet<Edge>>();
 		
-		for(int i = ticsIndex; i < tics.size(); i++){
-			TicNode curTic = tics.get(i);
-			HashMap<TacNode, TicTac> edges = new HashMap<TacNode, TicTac>();
-			for(int j = 0; j < curTic.suitableMatches.size(); i++){
-				// TODO: add if is not in map, then add to hashmap and recurse for next index
-			}
+		for(ArrayList<Edge> sol : solutions){
+			HashSet<Edge> setSol = new HashSet<Edge>(sol);
+			setSolutions.add(setSol);
 		}
-		
-		return null;
 	}
 	
-	private void setUpMatches(){
-		ArrayList<TicTac> possibleMatches;
+	private void setUpEdges(){
 		
-		for(int i = 0; i < tics.size(); i++){
-			possibleMatches = new ArrayList<TicTac>();
+		for(TicNode tic : tics){
+			ArrayList<Edge> possibleMatches = new ArrayList<Edge>();
+			
 			for(TacNode tac : tacs){
-				if(tac.val >= tics.get(i).low && tac.val <= tics.get(i).high){
-					possibleMatches.add(new TicTac(tics.get(i), tac));
+				if(tac.val >= tic.low && tac.val <= tic.high){
+					possibleMatches.add(new Edge(tic.val, tac.val, tic.weight, tac.weight));
 				}
 			}
 			
-			Collections.sort(possibleMatches);
-			tics.get(i).setMatchList(possibleMatches);
+			if(possibleMatches.size() >= 1){
+				edges.add(possibleMatches);
+			}
+		}
+		for(int i = 0; i < edges.size(); i++){
+			combine(edges, new ArrayList<Edge>(), i, 0);
+		}
+		
+	}
+	
+	private void combine(ArrayList<ArrayList<Edge>> input, ArrayList<Edge> current, int n, int count){
+		ArrayList<Edge> sol;
+		if(count == input.size()){
+			sol = new ArrayList<Edge>();
+			for(int i = 0; i < count; i++){
+				sol.add(current.get(i));
+			//	System.out.print(current.get(i) + ", ");
+			}
+			solutions.add(sol);
+			//System.out.println();
+		}
+		else{
+			for(int i = 0; i < input.get(n).size(); i++){
+				current.add(count, input.get(n).get(i));
+				combine(input, current, (n+1)%(edges.size()), count+1);
+			}
+		}
+	}
+	
+	private void reduce(){
+		ArrayList<Integer> usedTacs;
+		ArrayList<Edge>	replacement;
+		ArrayList<ArrayList<Edge>> reducedSolutions = new ArrayList<ArrayList<Edge>>();
+		
+		for(ArrayList<Edge> sol : solutions){
+			usedTacs = new ArrayList<Integer>();
+			replacement = new ArrayList<Edge>();
+			
+			for(int i = 0; i < sol.size(); i++){
+				if(!usedTacs.contains(sol.get(i).tac)){
+					replacement.add(sol.get(i));
+					usedTacs.add(sol.get(i).tac);
+				}
+			}
+			reducedSolutions.add(replacement);
+		}
+		solutions = reducedSolutions;
+	}
+	
+	private void reduceToMCM(){
+		int maxLen = -1;
+		for(ArrayList<Edge> sol : solutions){
+			maxLen = (sol.size() > maxLen) ? sol.size() : maxLen;
+		}
+		
+		Iterator<ArrayList<Edge>> itr = solutions.iterator();
+		while(itr.hasNext()){
+			ArrayList<Edge> curSol = itr.next();
+			
+			if(curSol.size() != maxLen){
+				itr.remove();
+			}
+		}
+	}
+	
+	private void reduceToMaxWeight(){
+		
+		int maxWeight = Integer.MIN_VALUE;
+		ArrayList<Integer> weights = new ArrayList<Integer>();
+		
+		for(ArrayList<Edge> sol : solutions){
+			int curWeight = 0;
+			for(Edge e : sol){
+				curWeight += e.weight;
+			}
+			weights.add(curWeight);		// saving this solutions weight for comparison later
+			maxWeight = (curWeight > maxWeight) ? curWeight : maxWeight;
+		}
+		System.out.print(maxWeight);
+		
+		Iterator<ArrayList<Edge>> itr = solutions.iterator();
+		Iterator<Integer> weightItr = weights.iterator();
+		
+		while(itr.hasNext()){
+			itr.next();
+			int curWeight = weightItr.next();
+			
+			if(curWeight != maxWeight){
+				itr.remove();
+				weightItr.remove(); // removing just to be sure both arrays maintain same length
+			}
 		}
 	}
 	
