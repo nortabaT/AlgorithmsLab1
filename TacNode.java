@@ -1,4 +1,4 @@
-public class TacNode {
+public class TacNode implements Comparable<TacNode>{
 	public int val;
 	public int weight;
 	public boolean matched;
@@ -12,5 +12,10 @@ public class TacNode {
 	@Override
 	public String toString(){
 		return Integer.toString(val);
+	}
+
+	@Override
+	public int compareTo(TacNode o) {
+		return this.hashCode() - o.hashCode();
 	}
 }

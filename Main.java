@@ -2,19 +2,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
 public class Main {
 	
 	public static void main(String [] args) throws IOException{
-<<<<<<< HEAD
-		FileReader inputFile = new FileReader(new File("input1.txt"));
-=======
 		FileReader inputFile = new FileReader(new File("file0.in"));
->>>>>>> e82d213a70781c822b1be92a4e8eb569d3237d63
 		Scanner in = new Scanner(inputFile);
 		
 		int graphs = Integer.parseInt(in.nextLine());
@@ -29,17 +22,6 @@ public class Main {
 		
 		input.nextLine();
 		
-<<<<<<< HEAD
-		ArrayList<TicNode> ticList = initTic(input, numTics);
-		ArrayList<TacNode> tacList = initTac(input, numTacs);
-		setUpTicMatches(ticList, tacList);
-		ArrayList<TicTac> mcmSolution = setUpMatching(ticList, tacList);
-		
-		System.out.println(mcmSolution);
-	}
-
-	public static ArrayList<TicTac> setUpMatching(ArrayList<TicNode> tics, ArrayList<TacNode> tacs){
-=======
 		// init lists
 		ArrayList<TicNode> ticList = initTic(input, numTics);
 		ArrayList<TacNode> tacList = initTac(input, numTacs);
@@ -48,7 +30,6 @@ public class Main {
 	}
 	
 /*	public static ArrayList<TicTac> setUpMatching(ArrayList<TicNode> tics, ArrayList<TacNode> tacs){
->>>>>>> e82d213a70781c822b1be92a4e8eb569d3237d63
 		HashMap<TacNode, TicTac> tacMap = new HashMap<TacNode, TicTac>(); // kev, val -> tac, matching (for fast lookup)
 		
 		// nested for loop of setting up first grouping of tic tac matchings
@@ -65,18 +46,9 @@ public class Main {
 				}
 				else if(tacMap.containsKey(currentTac)){
 					TicTac otherMatch = tacMap.get(currentTac);
-<<<<<<< HEAD
-					TicNode otherTic = otherMatch.tic;
-					if(currentMatch.edge > otherMatch.edge){	// if we have a better match, replace this mapping and find a replacement
-						tacMap.put(currentTac, currentMatch);
-						otherTic.suitableMatches.remove(otherMatch);
-						tacMap = findReplacement(otherTic, tacMap);
-						break;
-=======
 					if(currentMatch.edge > otherMatch.edge){	// if we have a better match, replace this mapping and find a replacement
 						tacMap.put(currentTac, currentMatch);
 						tacMap = findReplacement(currentTic, tacMap);
->>>>>>> e82d213a70781c822b1be92a4e8eb569d3237d63
 					}
 				}
 			}
@@ -89,15 +61,9 @@ public class Main {
 		}
 		
 		return solution;
-<<<<<<< HEAD
-	}
-	
-	private static HashMap<TacNode, TicTac> findReplacement(TicNode currentTic, HashMap<TacNode, TicTac> tacMap){
-=======
 	}*/
 	
 /*	private static HashMap<TacNode, TicTac> findReplacement(TicNode currentTic, HashMap<TacNode, TicTac> tacMap){
->>>>>>> e82d213a70781c822b1be92a4e8eb569d3237d63
 		for(TicTac match : currentTic.suitableMatches){
 			if(!tacMap.containsKey(match.tac)){							// base case, if there is no match for this current tac, match and move on
 				tacMap.put(match.tac, match);
@@ -105,29 +71,16 @@ public class Main {
 			}
 			else if(tacMap.containsKey(match.tac)){
 				TicTac otherMatch = tacMap.get(match.tac);
-<<<<<<< HEAD
-				TicNode otherTic = otherMatch.tic;
-				if(match.edge > otherMatch.edge){
-					tacMap.put(match.tac, match);
-					otherTic.suitableMatches.remove(otherMatch);
-					tacMap = findReplacement(otherMatch.tic, tacMap);	// recursive, find a new replacement for the one we lost
-					break;
-=======
 				
 				if(match.edge > otherMatch.edge){
 					tacMap.put(match.tac, match);
 					tacMap = findReplacement(otherMatch.tic, tacMap);	// recursive, find a new replacement for the one we lost
->>>>>>> e82d213a70781c822b1be92a4e8eb569d3237d63
 				}
 			}
 		}
 		
 		return tacMap;
-<<<<<<< HEAD
-	}
-=======
 	}*/
->>>>>>> e82d213a70781c822b1be92a4e8eb569d3237d63
 
 	public static ArrayList<TicNode> initTic(Scanner t, int tics){
 		ArrayList<TicNode> ticList = new ArrayList<TicNode>();
@@ -151,25 +104,6 @@ public class Main {
 		}
 		return tacList;
 	}
-<<<<<<< HEAD
-	
-	private static void setUpTicMatches(ArrayList<TicNode> ticList, ArrayList<TacNode> tacList){
-		ArrayList<TicTac> possibleMatches;
-		
-		for(int i = 0; i < ticList.size(); i++){
-			possibleMatches = new ArrayList<TicTac>();
-			for(TacNode tac : tacList){
-				if(tac.val >= ticList.get(i).low && tac.val <= ticList.get(i).high){
-					possibleMatches.add(new TicTac(ticList.get(i), tac));
-				}
-			}
-			
-			Collections.sort(possibleMatches);
-			ticList.get(i).setMatchList(possibleMatches);
-		}
-	}
-=======
 
->>>>>>> e82d213a70781c822b1be92a4e8eb569d3237d63
 	
 }
