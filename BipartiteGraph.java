@@ -24,6 +24,8 @@ public class BipartiteGraph {
 		setUpEdges();
 		solutions = reduce();
 		reduceToMCM();
+		reduceToMaxWeight();
+		System.out.println("Hi");
 	}
 	
 	private void setUpEdges(){
@@ -98,6 +100,35 @@ public class BipartiteGraph {
 			
 			if(curSol.size() != maxLen){
 				itr.remove();
+			}
+		}
+	}
+	
+	private void reduceToMaxWeight(){
+		
+		int maxWeight = Integer.MIN_VALUE;
+		ArrayList<Integer> weights = new ArrayList<Integer>();
+		
+		for(ArrayList<Edge> sol : solutions){
+			int curWeight = 0;
+			for(Edge e : sol){
+				curWeight += e.weight;
+			}
+			weights.add(curWeight);		// saving this solutions weight for comparison later
+			maxWeight = (curWeight > maxWeight) ? curWeight : maxWeight;
+		}
+		System.out.print(maxWeight);
+		
+		Iterator<ArrayList<Edge>> itr = solutions.iterator();
+		Iterator<Integer> weightItr = weights.iterator();
+		
+		while(itr.hasNext()){
+			ArrayList<Edge> curSol = itr.next();
+			int curWeight = weightItr.next();
+			
+			if(curWeight != maxWeight){
+				itr.remove();
+				weightItr.remove(); // removing just to be sure both arrays maintain same length
 			}
 		}
 	}
