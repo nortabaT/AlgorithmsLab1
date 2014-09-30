@@ -11,10 +11,12 @@ public class BipartiteGraph {
 	private Map<Integer, TacNode> tacMap = new HashMap<Integer, TacNode>();
 	
 	public ArrayList<ArrayList<Edge>> edges;
+	public ArrayList<ArrayList<Edge>> solutions;
 	public BipartiteGraph(ArrayList<TicNode> ticList, ArrayList<TacNode> tacList){
 		tics = ticList;
 		tacs = tacList;
 		edges = new ArrayList<ArrayList<Edge>>();
+		solutions = new ArrayList<ArrayList<Edge>>();
 		
 		for(TicNode t : tics) ticMap.put(t.val, t);		// fill maps
 		for(TacNode t : tacs) tacMap.put(t.val, t);
@@ -43,11 +45,14 @@ public class BipartiteGraph {
 	}
 	
 	private void combine(ArrayList<ArrayList<Edge>> input, ArrayList<Edge> current, int n, int count){
-		
+		ArrayList<Edge> sol;
 		if(count == input.size()){
+			sol = new ArrayList<Edge>();
 			for(int i = 0; i < count; i++){
+				sol.add(current.get(i));
 				System.out.print(current.get(i) + ", ");
 			}
+			solutions.add(sol);
 			System.out.println();
 		}
 		else{
