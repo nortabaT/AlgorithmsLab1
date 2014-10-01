@@ -4,7 +4,7 @@ AlgorithmsLab1
 **Stable Matching Algorithm**
 
 *Implements a variation of the stable marriage problem, where program determines
-maximum weight matchings of vertices in a convex bipartite graph.*
+maximum cardinality maximum weight matchings (MWMCMs) of vertices in a convex bipartite graph.*
 
 **Input Block Format:** Each input block species a CBG G = (U; V). The first line of an input block
 contains two integers m and n that specify |U| and |V|, respectively. Each of the next m lines contains four
