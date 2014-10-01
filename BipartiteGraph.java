@@ -1,16 +1,11 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.HashSet;
 
 public class BipartiteGraph {
 	
 	private ArrayList<TicNode> tics;
 	private ArrayList<TacNode> tacs;
-	
-	private Map<Integer, TicNode> ticMap = new HashMap<Integer, TicNode>();
-	private Map<Integer, TacNode> tacMap = new HashMap<Integer, TacNode>();
 	
 	private ArrayList<ArrayList<Edge>> edges;
 	private ArrayList<ArrayList<Edge>> solutions;
@@ -24,8 +19,6 @@ public class BipartiteGraph {
 		edges = new ArrayList<ArrayList<Edge>>();
 		solutions = new ArrayList<ArrayList<Edge>>();
 		solutionString = "";
-		for(TicNode t : tics) ticMap.put(t.val, t);		// fill maps
-		for(TacNode t : tacs) tacMap.put(t.val, t);
 	}
 	
 	public void solve(){
@@ -87,18 +80,14 @@ public class BipartiteGraph {
 	}
 	
 	private void combine(ArrayList<ArrayList<Edge>> input, ArrayList<Edge> current, int n, int count){
-		ArrayList<Edge> sol;
+
 		if(count == input.size()){
-			sol = new ArrayList<Edge>();
-			for(int i = 0; i < count; i++){
-				sol.add(current.get(i));
-			}
-			solutions.add(sol);
+			solutions.add(new ArrayList<Edge>(current.subList(0, count)));		// Add this current solution from index 0 until # of tics (count)
 		}
 		else{
 			for(int i = 0; i < input.get(n).size(); i++){
-				current.add(count, input.get(n).get(i));
-				combine(input, current, (n+1)%(edges.size()), count+1);
+				current.add(count, input.get(n).get(i));						// add this Edge to our current possible solution (current)
+				combine(input, current, (n+1)%(edges.size()), count+1);			// recursive call with index (n) that loops through all tics
 			}
 		}
 	}

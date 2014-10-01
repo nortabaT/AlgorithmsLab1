@@ -8,20 +8,20 @@ import java.util.Scanner;
 public class Main {
 	
 	public static void main(String [] args) throws IOException{
-		String filePathName = "small_size/input2.txt";
+		String filePathName = "small_size/input3.txt";
 		FileReader inputFile = new FileReader(new File(filePathName));
 		FileWriter outputFile = new FileWriter(new File(filePathName.replace("input", "output")));
 		Scanner in = new Scanner(inputFile);
 		
 		int graphs = Integer.parseInt(in.nextLine());
 		for(int i=0; i<graphs; i++){
-			solveMCM(in, outputFile);
+			solveGraph(in, outputFile);
 		}
 		outputFile.flush();
 		outputFile.close();
 	}
 	
-	public static void solveMCM(Scanner input, FileWriter outputFile) throws IOException{
+	public static void solveGraph(Scanner input, FileWriter outputFile) throws IOException{
 		int numTics = input.nextInt();
 		int numTacs = input.nextInt();
 		
