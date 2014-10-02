@@ -8,15 +8,20 @@ import java.util.Scanner;
 public class Main {
 	
 	public static void main(String [] args) throws IOException{
-		String filePathName = "small_size/input3.txt";
-		FileReader inputFile = new FileReader(new File(filePathName));
-		FileWriter outputFile = new FileWriter(new File(filePathName.replace("input", "output")));
+		String inputPath = args[0];															// name of this input file
+		String outputPath = args[0].substring(0, args[0].lastIndexOf('.')) + ".out";		// removing the ending file type and replacing it with .out (to signify it's an output of this input file)
+		
+		FileReader inputFile = new FileReader(new File(inputPath));
+		FileWriter outputFile = new FileWriter(new File(outputPath));
+		
 		Scanner in = new Scanner(inputFile);
 		
-		int graphs = Integer.parseInt(in.nextLine());
+		int graphs = Integer.parseInt(in.nextLine());	// number of graphs in this file
+		
 		for(int i=0; i<graphs; i++){
 			solveGraph(in, outputFile);
 		}
+		
 		outputFile.flush();
 		outputFile.close();
 	}
@@ -25,13 +30,14 @@ public class Main {
 		int numTics = input.nextInt();
 		int numTacs = input.nextInt();
 		
-		input.nextLine();
+		input.nextLine();	// move scanner to the next line (start of node definitions)
 		
-		// init lists
-		ArrayList<TicNode> ticList = initTic(input, numTics);
-		ArrayList<TacNode> tacList = initTac(input, numTacs);
+		ArrayList<TicNode> ticList = initTic(input, numTics);	// convert all our input strings into node objects
+		ArrayList<TacNode> tacList = initTac(input, numTacs);	
+		
 		BipartiteGraph g = new BipartiteGraph(ticList, tacList);
-		g.solve();
+		g.solve();												// takes all our tics and tacs and finds all possible MWMCM solutions
+		
 		outputFile.write(g.getSolutionString());
 	}
 

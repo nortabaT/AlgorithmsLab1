@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.HashSet;
+import java.util.TreeSet;
 
 public class BipartiteGraph {
 	
@@ -10,7 +10,7 @@ public class BipartiteGraph {
 	private ArrayList<ArrayList<Edge>> edges;
 	private ArrayList<ArrayList<Edge>> solutions;
 	
-	public HashSet<HashSet<Edge>> setSolutions;
+	public TreeSet<CompareableSet> finishedSolutions;
 	public String solutionString;
 	
 	public BipartiteGraph(ArrayList<TicNode> ticList, ArrayList<TacNode> tacList){
@@ -28,7 +28,7 @@ public class BipartiteGraph {
 		reduceToMaxWeight();
 		dumpToSet();
 		setSolutionString();
-		System.out.println(solutionString);
+		System.out.print(solutionString);
 	}
 	
 	public String getSolutionString(){
@@ -37,10 +37,10 @@ public class BipartiteGraph {
 	
 	private void setSolutionString(){
 		String display = "";
-		display += setSolutions.size() + "\n";
-		
-		for(HashSet<Edge> edges : setSolutions){
-			for(Edge e : edges){
+		display += finishedSolutions.size() + "\n";
+				
+		for(CompareableSet solution : finishedSolutions){
+			for(Edge e : solution){
 				display += e + " ";
 			}
 			display += "\n";
@@ -50,11 +50,11 @@ public class BipartiteGraph {
 	}
 	
 	private void dumpToSet(){
-		setSolutions = new HashSet<HashSet<Edge>>();
+		finishedSolutions = new TreeSet<CompareableSet>();
 		
 		for(ArrayList<Edge> sol : solutions){
-			HashSet<Edge> setSol = new HashSet<Edge>(sol);
-			setSolutions.add(setSol);
+			CompareableSet setSol = new CompareableSet(sol);
+			finishedSolutions.add(setSol);
 		}
 	}
 	

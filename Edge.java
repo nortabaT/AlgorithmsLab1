@@ -14,11 +14,8 @@ public class Edge implements Comparable<Edge>{
 	}
 
 	@Override
-	public int compareTo(Edge arg0) {
-		if(this.hashCode() == arg0.hashCode()){
-			return 0;
-		}
-		return -1;
+	public int compareTo(Edge o) {
+		return this.tac - o.tac;
 	}
 
 }
